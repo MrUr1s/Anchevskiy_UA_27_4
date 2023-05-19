@@ -113,11 +113,14 @@ namespace Player {
         {
             PoolBullet.instance.Fire(pos, rot);
         }
-
-        [PunRPC]
-        private void Death()
+        public void Stop()
         {
             isPlayable = false;
+        }
+        [PunRPC]
+        public void Death()
+        {
+            SpawnPlayer.instance.StopGame();    
             _uIPlayer.SetWonOrLost(photonView.IsMine);
             StartCoroutine(LeaveGame());
         }
@@ -125,7 +128,6 @@ namespace Player {
         private IEnumerator LeaveGame()
         {
             yield return new WaitForSeconds(10f);
-            PhotonNetwork.Disconnect();
             PhotonNetwork.LoadLevel("MenuScene");
         }
 
